@@ -1,0 +1,2 @@
+# hidden-flag
+ctf flag
