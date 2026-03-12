@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cyber Hunt CTF</title>
+
+<style>
+
+body{
+background:black;
+color:#00ff00;
+font-family:monospace;
+text-align:center;
+margin:0;
+padding:0;
+}
+
+.container{
+margin-top:15vh;
+padding:20px;
+}
+
+input{
+background:black;
+color:#00ff00;
+border:1px solid #00ff00;
+padding:10px;
+font-size:18px;
+}
+
+button{
+background:black;
+color:#00ff00;
+border:2px solid #00ff00;
+padding:10px 20px;
+font-size:18px;
+cursor:pointer;
+}
+
+h1{
+text-shadow:0 0 10px #00ff00;
+}
+
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+background:red;
+top:-10px;
+animation:fall 3s linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(0)}
+100%{transform:translateY(100vh)}
+}
+
+@media(max-width:600px){
+
+h1{
+font-size:26px;
+}
+
+button{
+font-size:16px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💻 CYBER HUNT CTF</h1>
+
+<h2 id="level">Level 1</h2>
+
+<p id="question">Hint: Inspect</p>
+
+<input id="answer">
+
+<br><br>
+
+<button onclick="check()">Submit</button>
+
+</div>
+
+<audio id="win" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+<audio id="wrong" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+
+<script>
+
+let level = 1
+
+function check(){
+
+let ans = document.getElementById("answer").value
+
+let win = document.getElementById("win")
+let wrong = document.getElementById("wrong")
+
+if(level==1 && ans=="inspect"){
+
+alert("BREACH{hidden_start}")
+win.play()
+next()
+
+}
+
+else if(level==2 && ans=="cyber"){
+
+alert("BREACH{password_breaker}")
+win.play()
+next()
+
+}
+
+else if(level==3 && ans=="56"){
+
+alert("BREACH{puzzle_solver}")
+win.play()
+next()
+
+}
+
+else if(level==4 && ans=="hacker"){
+
+alert("BREACH{keyboard_master}")
+win.play()
+next()
+
+}
+
+else if(level==5 && ans=="decode"){
+
+alert("BREACH{decode_master}")
+win.play()
+final()
+
+}
+
+else{
+
+wrong.play()
+alert("Wrong Answer")
+
+}
+
+}
+
+function next(){
+
+level++
+
+document.getElementById("answer").value=""
+
+if(level==2){
+
+document.getElementById("level").innerText="Level 2"
+document.getElementById("question").innerText="Password Hint: cyber"
+
+}
+
+if(level==3){
+
+document.getElementById("level").innerText="Level 3"
+document.getElementById("question").innerText="Puzzle: 7 × 8 = ?"
+
+}
+
+if(level==4){
+
+document.getElementById("level").innerText="Level 4"
+document.getElementById("question").innerText="Type secret word (Hint: hacker)"
+
+}
+
+if(level==5){
+
+document.getElementById("level").innerText="Level 5"
+document.getElementById("question").innerText="Decode Hint: decode"
+
+}
+
+}
+
+function final(){
+
+document.body.innerHTML=""
+
+let h1=document.createElement("h1")
+h1.innerText="🎉 YOU WON THE CTF 🎉"
+
+let h2=document.createElement("h2")
+h2.innerText="FINAL FLAG"
+
+let h3=document.createElement("h3")
+h3.innerText="BREACH{CTF_CHAMPION}"
+
+document.body.appendChild(h1)
+document.body.appendChild(h2)
+document.body.appendChild(h3)
+
+for(let i=0;i<100;i++){
+
+let c=document.createElement("div")
+c.className="confetti"
+c.style.left=Math.random()*100+"vw"
+c.style.background="hsl("+Math.random()*360+"deg,100%,50%)"
+
+document.body.appendChild(c)
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
