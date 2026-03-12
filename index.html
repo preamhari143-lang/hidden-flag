@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyber Hunt CTF</title>
+
+<style>
+
+body{
+background:black;
+color:#00ff00;
+font-family:monospace;
+text-align:center;
+margin:0;
+padding:0;
+overflow:hidden;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+.container{
+margin-top:15vh;
+padding:20px;
+}
+
+input{
+background:black;
+color:#00ff00;
+border:1px solid #00ff00;
+padding:10px;
+font-size:18px;
+}
+
+button{
+background:black;
+color:#00ff00;
+border:2px solid #00ff00;
+padding:10px 20px;
+font-size:18px;
+cursor:pointer;
+}
+
+h1{
+text-shadow:0 0 10px #00ff00;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<!-- fake flags -->
+<!-- BREACH{fake_flag_try_again} -->
+<!-- BREACH{wrong_direction} -->
+
+<div class="container">
+
+<h1>💻 CYBER HUNT CTF</h1>
+
+<h2 id="level">Level 1</h2>
+
+<p id="question">Hint: first word shown</p>
+
+<input id="answer">
+
+<br><br>
+
+<button onclick="check()">Submit</button>
+
+<br><br>
+
+<div id="flagBox"></div>
+
+<button id="nextBtn" onclick="next()" style="display:none;">Next Level ➜</button>
+
+</div>
+
+<script>
+
+let level=1
+
+let enc4="cmVraGFj"
+let enc5="ZGVjb2Rl"
+
+function decodeReverse(str){
+return atob(str).split("").reverse().join("")
+}
+
+function showFlag(flag){
+
+let box=document.getElementById("flagBox")
+
+box.innerHTML=`
+<h2>FLAG FOUND</h2>
+<h1>${flag}</h1>
+`
+
+document.getElementById("nextBtn").style.display="inline-block"
+
+}
+
+function check(){
+
+let ans=document.getElementById("answer").value.trim().toLowerCase()
+
+if(level==1 && ans=="first"){
+showFlag("BREACH{easy_start}")
+}
+
+else if(level==2){
+
+let hint="developer"
+let key=hint.slice(0,3)+hint.slice(-1)
+
+if(ans==key){
+showFlag("BREACH{logic_found}")
+}else alert("Wrong")
+
+}
+
+else if(level==3){
+
+let result=(15*8)+(4*6)
+
+if(Number(ans)==result){
+showFlag("BREACH{puzzle_master}")
+}else alert("Wrong")
+
+}
+
+else if(level==4 && ans==decodeReverse(enc4)){
+showFlag("BREACH{decode_hacker}")
+}
+
+else if(level==5){
+
+let finalAns=atob(enc5)
+
+if(ans==finalAns){
+showFlag("BREACH{final_solver}")
+}else alert("Wrong")
+
+}
+
+else{
+alert("Wrong")
+}
+
+}
+
+function next(){
+
+level++
+
+document.getElementById("answer").value=""
+document.getElementById("flagBox").innerHTML=""
+document.getElementById("nextBtn").style.display="none"
+
+if(level==2){
+levelText("Level 2","Hint: developer → first 3 letters + last letter")
+}
+
+if(level==3){
+levelText("Level 3","Puzzle: (15×8)+(4×6)= ?")
+}
+
+if(level==4){
+levelText("Level 4","Decode + reverse: cmVraGFj")
+}
+
+if(level==5){
+levelText("Level 5","Inspect code and decode: ZGVjb2Rl")
+}
+
+if(level==6){
+final()
+}
+
+}
+
+function levelText(l,q){
+
+document.getElementById("level").innerText=l
+document.getElementById("question").innerText=q
+
+}
+
+function final(){
+
+document.body.innerHTML=""
+
+let title=document.createElement("h1")
+title.innerText="🎉 YOU WON THE CTF 🎉"
+
+let flag=document.createElement("h2")
+flag.innerText="BREACH{CYBER_ELITE_HACKER}"
+
+document.body.appendChild(title)
+document.body.appendChild(flag)
+
+}
+
+</script>
+
+<script>
+
+/* MATRIX BACKGROUND */
+
+const canvas=document.getElementById("matrix")
+const ctx=canvas.getContext("2d")
+
+canvas.height=window.innerHeight
+canvas.width=window.innerWidth
+
+let letters="01"
+letters=letters.split("")
+
+let fontSize=14
+let columns=canvas.width/fontSize
+
+let drops=[]
+
+for(let x=0;x<columns;x++)
+drops[x]=1
+
+function drawMatrix(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)"
+ctx.fillRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle="#0F0"
+ctx.font=fontSize+"px monospace"
+
+for(let i=0;i<drops.length;i++){
+
+let text=letters[Math.floor(Math.random()*letters.length)]
+
+ctx.fillText(text,i*fontSize,drops[i]*fontSize)
+
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+drops[i]=0
+
+drops[i]++
+
+}
+
+}
+
+setInterval(drawMatrix,33)
+
+</script>
+
+</body>
+</html>
